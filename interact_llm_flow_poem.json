@@ -1,0 +1,295 @@
+{
+    "nodes": [
+        {
+            "id": "676a5267-f596-452c-84a6-be9daa61609d",
+            "x": 66,
+            "y": 292,
+            "node_type": "inicio",
+            "text": "Inicio 1",
+            "title": "",
+            "config": {},
+            "connected_to": "ffdfcea5-9aec-4d7e-ad00-7b0035a158ec",
+            "true_connection": null,
+            "false_connection": null
+        },
+        {
+            "id": "ffdfcea5-9aec-4d7e-ad00-7b0035a158ec",
+            "x": 192,
+            "y": 158,
+            "node_type": "accion",
+            "text": "? answer",
+            "title": "ask name",
+            "config": {
+                "action_type": "pregunta",
+                "question": "cual es tu nombre?",
+                "variable_name": "answer"
+            },
+            "connected_to": "d35340a7-e48f-4dce-ad67-55f80190391f",
+            "true_connection": null,
+            "false_connection": null
+        },
+        {
+            "id": "d35340a7-e48f-4dce-ad67-55f80190391f",
+            "x": 315,
+            "y": 471,
+            "node_type": "llm",
+            "text": "LLM: result",
+            "title": "ask llm",
+            "config": {
+                "model": {
+                    "type": "variable",
+                    "value": "model"
+                },
+                "personality": {
+                    "type": "variable",
+                    "value": "personality"
+                },
+                "instructions": {
+                    "type": "variable",
+                    "value": "instructions"
+                },
+                "context": {
+                    "type": "variable",
+                    "value": "context"
+                },
+                "prompt": {
+                    "type": "free",
+                    "value": "Pregunta hecha al usuario: Cual es tu nombre?, Respuesta del usuario: ${answer}"
+                },
+                "variable_name": "result",
+                "action_type": "llm"
+            },
+            "connected_to": "f9a7a5dd-2358-47f9-b767-d9ffda514bed",
+            "true_connection": null,
+            "false_connection": null
+        },
+        {
+            "id": "f9a7a5dd-2358-47f9-b767-d9ffda514bed",
+            "x": 403,
+            "y": 157,
+            "node_type": "python",
+            "text": "Python: memory",
+            "title": "extract memory",
+            "config": {
+                "code": "def func(result):\n    import json\n    texto_limpio = result.split(\"<think>\")[1].split(\"</think>\")[1]\n    try:\n        clean_text = texto_limpio.split(\"```json\")[1].split(\"```\")[0]\n        obj = json.loads(clean_text)\n    except:\n        obj = json.loads(texto_limpio)\n    return obj",
+                "params": [
+                    "result"
+                ],
+                "variable_name": "memory",
+                "action_type": "python"
+            },
+            "connected_to": "42a61377-62c3-4f69-8399-9ab1712843d8",
+            "true_connection": null,
+            "false_connection": null
+        },
+        {
+            "id": "42a61377-62c3-4f69-8399-9ab1712843d8",
+            "x": 523,
+            "y": 320,
+            "node_type": "python",
+            "text": "Python: is_finished",
+            "title": "extract is_finished",
+            "config": {
+                "code": "def func(memory):\n    import json\n    \n    return memory[\"datos_completos\"]",
+                "params": [
+                    "memory"
+                ],
+                "variable_name": "is_finished",
+                "action_type": "python"
+            },
+            "connected_to": "83fde952-83f1-416c-9f74-eeed5c7882c7",
+            "true_connection": null,
+            "false_connection": null
+        },
+        {
+            "id": "83fde952-83f1-416c-9f74-eeed5c7882c7",
+            "x": 710,
+            "y": 254,
+            "node_type": "condicional",
+            "text": "Condicional",
+            "title": "check finished",
+            "config": {
+                "conditions": [
+                    {
+                        "variable": "is_finished",
+                        "operator": "==",
+                        "value": "True"
+                    }
+                ],
+                "logical_operator": ""
+            },
+            "connected_to": null,
+            "true_connection": "4b6f034e-bd8f-4ec1-b64c-89b784d9db0f",
+            "false_connection": "9c83da8e-4810-434d-a21d-d156376f9e37"
+        },
+        {
+            "id": "4b6f034e-bd8f-4ec1-b64c-89b784d9db0f",
+            "x": 914,
+            "y": 180,
+            "node_type": "llm",
+            "text": "LLM: poem",
+            "title": "create poem",
+            "config": {
+                "model": {
+                    "type": "variable",
+                    "value": "model"
+                },
+                "personality": {
+                    "type": "variable",
+                    "value": "personality"
+                },
+                "instructions": {
+                    "type": "free",
+                    "value": "Crea un poema con la informaci\u00f3n del usuario que fue proporcionada en json, se creativo y usa todos los aspectos"
+                },
+                "context": {
+                    "type": "variable",
+                    "value": "memory"
+                },
+                "prompt": {
+                    "type": "free",
+                    "value": "Poema:"
+                },
+                "variable_name": "poem",
+                "action_type": "llm"
+            },
+            "connected_to": "3b9896b3-5648-46f2-b835-be0aa4d647b7",
+            "true_connection": null,
+            "false_connection": null
+        },
+        {
+            "id": "3b9896b3-5648-46f2-b835-be0aa4d647b7",
+            "x": 1163,
+            "y": 192,
+            "node_type": "final",
+            "text": "Final 8",
+            "title": "",
+            "config": {},
+            "connected_to": null,
+            "true_connection": null,
+            "false_connection": null
+        },
+        {
+            "id": "9c83da8e-4810-434d-a21d-d156376f9e37",
+            "x": 868,
+            "y": 426,
+            "node_type": "python",
+            "text": "Python: next_question",
+            "title": "extract next question",
+            "config": {
+                "code": "def func(memory):\n    import json\n    \n    return memory[\"next_question\"]",
+                "params": [
+                    "memory"
+                ],
+                "variable_name": "next_question",
+                "action_type": "python"
+            },
+            "connected_to": "5863b7ef-2a56-48c7-a29c-f2a32507e284",
+            "true_connection": null,
+            "false_connection": null
+        },
+        {
+            "id": "5863b7ef-2a56-48c7-a29c-f2a32507e284",
+            "x": 881,
+            "y": 578,
+            "node_type": "accion",
+            "text": "? answer",
+            "title": "ask next question",
+            "config": {
+                "action_type": "pregunta",
+                "question": "${next_question}",
+                "variable_name": "answer"
+            },
+            "connected_to": "8489be5e-c562-4867-ab7b-087d37251824",
+            "true_connection": null,
+            "false_connection": null
+        },
+        {
+            "id": "8489be5e-c562-4867-ab7b-087d37251824",
+            "x": 552,
+            "y": 643,
+            "node_type": "llm",
+            "text": "LLM: result",
+            "title": "ask llm next_question",
+            "config": {
+                "model": {
+                    "type": "variable",
+                    "value": "model"
+                },
+                "personality": {
+                    "type": "variable",
+                    "value": "personality"
+                },
+                "instructions": {
+                    "type": "variable",
+                    "value": "instructions"
+                },
+                "context": {
+                    "type": "variable",
+                    "value": "context"
+                },
+                "prompt": {
+                    "type": "free",
+                    "value": "Memory: ${memory} \\nQuestion to user: ${next_question} \\nAnswer from user: ${answer}"
+                },
+                "variable_name": "result",
+                "action_type": "llm"
+            },
+            "connected_to": "f9a7a5dd-2358-47f9-b767-d9ffda514bed",
+            "true_connection": null,
+            "false_connection": null
+        }
+    ],
+    "variables": [
+        {
+            "name": "personality",
+            "var_type": "string",
+            "value": "Eres un asistente muy conciso, no entregues mas informaci\u00f3n de la que te solicite el usuario."
+        },
+        {
+            "name": "instructions",
+            "var_type": "string",
+            "value": "Rellena la informaci\u00f3n que te va entregando el usuario pregunta a pregunta, actualiza la pregunta para ir obteniendo la informaci\u00f3n que ta falta, una a la vez, entrega el resultado en formato json, solo el json."
+        },
+        {
+            "name": "model",
+            "var_type": "string",
+            "value": "deepseek-r1:8b"
+        },
+        {
+            "name": "context",
+            "var_type": "string",
+            "value": "Consigue los siguientes datos del usuario: {'nombre': '...', 'color_favorito': '...', 'comida_favorita': '...', 'datos_completos': false, 'next_question': 'Cual es tu nombre?'}, A medida que ya tengas un dato, actualiza la siguiente pregunta (next_question) para el usuario. Cuando los tengas todos, pon datos_completos como true"
+        },
+        {
+            "name": "memory",
+            "var_type": "string",
+            "value": null
+        },
+        {
+            "name": "answer",
+            "var_type": "string",
+            "value": null
+        },
+        {
+            "name": "next_question",
+            "var_type": "string",
+            "value": null
+        },
+        {
+            "name": "result",
+            "var_type": "string",
+            "value": null
+        },
+        {
+            "name": "is_finished",
+            "var_type": "string",
+            "value": null
+        },
+        {
+            "name": "poem",
+            "var_type": "string",
+            "value": null
+        }
+    ]
+}
