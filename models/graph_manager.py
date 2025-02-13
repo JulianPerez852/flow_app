@@ -9,10 +9,12 @@ class GraphManager:
         self.graph.add_node(node.id, data=node)
 
     def remove_node(self, node_id):
-        self.graph.remove_node(node_id)
+        if node_id in self.graph.nodes:
+            self.graph.remove_node(node_id)
 
     def add_edge(self, start_node, end_node):
         self.graph.add_edge(start_node.id, end_node.id)
 
     def remove_edge(self, start_node, end_node):
-        self.graph.remove_edge(start_node.id, end_node.id)
+        if self.graph.has_edge(start_node.id, end_node.id):
+            self.graph.remove_edge(start_node.id, end_node.id)

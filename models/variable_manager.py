@@ -1,9 +1,8 @@
 # models/variable_manager.py
-
 class Variable:
     def __init__(self, name, var_type, value=None):
         self.name = name
-        self.var_type = var_type  # "string", "integer" o "boolean"
+        self.var_type = var_type
         self.value = value
 
     def __str__(self):
@@ -11,7 +10,7 @@ class Variable:
 
 class VariableManager:
     def __init__(self):
-        self.variables = {}  # Diccionario: clave = nombre de la variable
+        self.variables = {}
 
     def add_variable(self, name, var_type, value=None):
         if name in self.variables:
@@ -31,7 +30,6 @@ class VariableManager:
         return list(self.variables.values())
 
     def load_variables(self, variables_data):
-        """Recibe una lista de dicts y carga las variables."""
         self.variables = {}
         for var in variables_data:
             self.variables[var["name"]] = Variable(var["name"], var["var_type"], var.get("value"))
