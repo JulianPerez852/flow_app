@@ -1,5 +1,4 @@
 # main.py
-# main.py
 from controllers.diagram_controller import DiagramController
 from views.diagram_view import DiagramView
 
