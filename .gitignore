@@ -1,0 +1,23 @@
+.env
+test.py
+memoria/*
+*.json
+
+# Archivado en: .gitignore
+
+# Ambiente virtual
+.venv/
+venv/
+
+# Cachés de Python
+__pycache__/
+*.py[cod]
+
+# Archivos de logs
+*.log
+
+# Archivos temporales del sistema
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
