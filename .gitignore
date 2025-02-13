@@ -21,3 +21,12 @@ __pycache__/
 *.swo
 .DS_Store
 Thumbs.db
+
+# Ignorar carpeta 'memoria' en cualquier ubicación
+memoria/
+
+# Ignorar el archivo test.py en la raíz
+/test.py
+
+# Ignorar todos los archivos .json en la raíz
+/*.json
